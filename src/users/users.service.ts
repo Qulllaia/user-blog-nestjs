@@ -45,5 +45,13 @@ export class UsersService {
       HttpStatus.NOT_FOUND,
     );
   }
-  async banUser(dto: BanUserDto) {}
+  async banUser(dto: BanUserDto) {
+    const user = await this.userRepository.findByPk(dto.userId);
+    if (user) {
+      user.banned = true;
+      user.banReason = dto.banReason;
+      await user?.save();
+    }
+    return user;
+  }
 }

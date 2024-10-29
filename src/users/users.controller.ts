@@ -32,7 +32,7 @@ export class UsersController {
 
   @Roles('administrator')
   @UseGuards(RolesGuard)
-  @Get('/ban')
+  @Post('/ban')
   banuser(@Body() dto: BanUserDto) {
     return this.usersService.banUser(dto);
   }
