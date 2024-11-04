@@ -17,8 +17,9 @@ export class AuthService {
   ) {}
 
   async login(userDto: CreateUser) {
+    console.log(userDto);
     const user = await this.validateUser(userDto);
-    return this.generateToken(user);
+    return await this.generateToken(user);
   }
 
   async registration(userDto: CreateUser) {

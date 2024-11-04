@@ -8,6 +8,7 @@ export class AuthController {
 
   @Post('/login')
   login(@Body() userDto: CreateUser) {
+    console.log(userDto);
     return this.authService.login(userDto);
   }
 
