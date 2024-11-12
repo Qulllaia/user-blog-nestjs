@@ -27,7 +27,6 @@ export class Post extends Model<Post, PostCreationAttributes> {
 
   @Column({
     type: DataType.STRING,
-    unique: true,
     allowNull: false,
   })
   title: string;

@@ -25,14 +25,14 @@ export class UsersController {
     return this.usersService.createUser(userDto);
   }
 
-  @Roles('administrator')
+  @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Get()
   getAllUsers() {
     return this.usersService.getAllUsers();
   }
 
-  @Roles('administrator')
+  @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @UsePipes(ValidationPipe)
   @Post('/role')
@@ -40,7 +40,7 @@ export class UsersController {
     return this.usersService.addRole(dto);
   }
 
-  @Roles('administrator')
+  @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Post('/ban')
   banuser(@Body() dto: BanUserDto) {
