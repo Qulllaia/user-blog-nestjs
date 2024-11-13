@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import * as path from 'path';
 import * as fs from 'fs';
@@ -7,7 +7,6 @@ import * as uuid from 'uuid';
 @Injectable()
 export class FilesService {
   async createFile(file: any): Promise<string> {
-    Logger.log(file)
     try {
       const fileName = uuid.v4() + '.jpg';
       const filePath = path.resolve(__dirname, '..', 'static');

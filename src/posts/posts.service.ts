@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePost } from './dto/create-post.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Post } from './posts.model';
@@ -6,6 +6,7 @@ import { Logger } from '@nestjs/common';
 import { FilesService } from 'src/files/files.service';
 import { User } from 'src/users/user.model';
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
+import { where } from 'sequelize';
 
 @Injectable()
 export class PostsService {
@@ -15,8 +16,14 @@ export class PostsService {
   ) {}
   
   async create(dto: CreatePost, image: any) {
-    const fileName = await this.fileService.createFile(image);
-    const post = await this.postRepository.create({ ...dto, image: fileName });
+    let post;
+    if(image){
+      const fileName = await this.fileService.createFile(image);
+      post = await this.postRepository.create({ ...dto, image: fileName });
+    }
+    else{
+      post = await this.postRepository.create({ ...dto, image: "" });
+    }
     return post;
   }
   
@@ -26,7 +33,14 @@ export class PostsService {
     });
     return posts;
   }
-  async delete() {
-    
+  async delete(id:string) {
+    const rowDeleted = await this.postRepository.destroy({where:{id}})
+    if(rowDeleted === 1){
+      return this.get()
+    }
+    else{
+      return new HttpException('Указанный пост не был найден', HttpStatus.NOT_FOUND)
+    }
+
   }
 }

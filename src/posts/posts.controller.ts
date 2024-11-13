@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -23,5 +25,10 @@ export class PostsController {
   @Get()
   getAllPosts() {
     return this.postService.get();
+  }
+
+  @Delete('/:id')
+  deletePost(@Param('id') param:string){
+    return this.postService.delete(param)
   }
 }

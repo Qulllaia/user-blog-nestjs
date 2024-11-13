@@ -8,6 +8,7 @@ import { BanUserDto } from './dto/ban-user.dto';
 
 @Injectable()
 export class UsersService {
+  
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private rolesRepository: RoleService,
@@ -17,6 +18,11 @@ export class UsersService {
     const role = await this.rolesRepository.getRoleByValue('USER');
     await user.$set('roles', [role[0].id]);
     user.roles = [...role];
+    return user;
+  }
+
+  async getUserData(id: string) {
+    const user = await this.userRepository.findByPk(id, {attributes: ['id', 'email','banned', 'createdAt'], include:['roles', 'posts']});
     return user;
   }
 

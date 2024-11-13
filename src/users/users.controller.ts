@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UseGuards,
   UsePipes,
@@ -23,6 +24,11 @@ export class UsersController {
   @Post()
   createUser(@Body() userDto: CreateUser) {
     return this.usersService.createUser(userDto);
+  }
+
+  @Get('/:id')
+  getUserData(@Param('id') param:string){
+    return this.usersService.getUserData(param)
   }
 
   @Roles('ADMIN')
