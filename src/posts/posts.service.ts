@@ -41,6 +41,16 @@ export class PostsService {
     else{
       return new HttpException('Указанный пост не был найден', HttpStatus.NOT_FOUND)
     }
+  }
 
+  async update(id:string, dto:CreatePost, image:any){
+    let post;
+    if(image){
+      const fileName = await this.fileService.createFile(image);
+      post = await this.postRepository.update({ ...dto, image: fileName }, {where:{id}});
+    }else{
+      post = await this.postRepository.update({ ...dto, image: "" }, {where:{id}});
+    }
+    return post;
   }
 }

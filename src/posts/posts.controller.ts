@@ -3,10 +3,12 @@ import {
   Controller,
   Delete,
   Get,
+  Put,
   Param,
   Post,
   UploadedFile,
   UseInterceptors,
+  Logger,
 } from '@nestjs/common';
 import { CreatePost } from './dto/create-post.dto';
 import { PostsService } from './posts.service';
@@ -19,6 +21,7 @@ export class PostsController {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   createPost(@Body() dto: CreatePost, @UploadedFile() image: any) {
+    Logger.log(dto)
     return this.postService.create(dto, image);
   }
 
@@ -30,5 +33,11 @@ export class PostsController {
   @Delete('/:id')
   deletePost(@Param('id') param:string){
     return this.postService.delete(param)
+  }
+
+  @Put('/:id')
+  @UseInterceptors(FileInterceptor('image'))
+  updatePost(@Body() dto: CreatePost, @UploadedFile() image:any, @Param('id') param:string){
+    return this.postService.update(param, dto, image)
   }
 }
