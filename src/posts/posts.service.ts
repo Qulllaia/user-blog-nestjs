@@ -4,12 +4,15 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Post } from './posts.model';
 import { FilesService } from 'src/files/files.service';
 import { User } from 'src/users/user.model';
+import { UserService } from 'src/users/user.service';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectModel(Post) private postRepository: typeof Post,
     private fileService: FilesService,
+    private userService: UserService,
   ) {}
 
   async create(dto: CreatePost, image: any) {
@@ -30,6 +33,12 @@ export class PostsService {
     return posts;
   }
   async delete(id: string) {
+    //Поправлю
+    let userId = '1';
+    const user = await this.userService.getUser(userId);
+    const recult = await firstValueFrom(user);
+    console.log(recult);
+
     const rowDeleted = await this.postRepository.destroy({ where: { id } });
     if (rowDeleted === 1) {
       return this.get();
